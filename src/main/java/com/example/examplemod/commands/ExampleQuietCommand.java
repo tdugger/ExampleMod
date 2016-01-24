@@ -1,10 +1,11 @@
 package com.example.examplemod.commands;
 
 import com.example.examplemod.ExampleMod;
+
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.BlockPos;
+//import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 
 import java.util.ArrayList;
@@ -23,7 +24,6 @@ public class ExampleQuietCommand implements ICommand {
         this.aliases.add("quiet");
     }
 
-    @Override
     public String getName()
     {
         return "quiet";
@@ -35,13 +35,11 @@ public class ExampleQuietCommand implements ICommand {
         return "quiet <text>";
     }
 
-    @Override
     public List getAliases()
     {
         return this.aliases;
     }
 
-    @Override
     public void execute(ICommandSender icommandsender, String[] astring)
     {
         if(astring.length > 1)
@@ -62,19 +60,18 @@ public class ExampleQuietCommand implements ICommand {
         }
     }
 
-    @Override
     public boolean canCommandSenderUse(ICommandSender icommandsender)
     {
         return true;
     }
-
+/*
     @Override
     public List addTabCompletionOptions(ICommandSender icommandsender,
                                         String[] astring, BlockPos loc)
     {
         return null;
     }
-
+*/
     @Override
     public boolean isUsernameIndex(String[] astring, int i)
     {
@@ -86,5 +83,35 @@ public class ExampleQuietCommand implements ICommand {
     {
         return 0;
     }
+
+	@Override
+	public List addTabCompletionOptions(ICommandSender arg0, String[] arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canCommandSenderUseCommand(ICommandSender arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List getCommandAliases() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getCommandName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void processCommand(ICommandSender arg0, String[] arg1) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 

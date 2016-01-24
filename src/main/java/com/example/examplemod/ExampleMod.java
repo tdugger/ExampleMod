@@ -2,6 +2,7 @@ package com.example.examplemod;
 
 import com.example.examplemod.commands.ExampleQuietCommand;
 import com.example.examplemod.commands.ExampleShowCommand;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,14 +26,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -95,7 +95,7 @@ public class ExampleMod
 
             System.out.println("Login Player found!");
             EntityPlayer player = event.player;
-            System.out.println(player.getName() + " joined!");
+            System.out.println(player.getDisplayName() + " joined!");
 
             SaveHandler saveHandler = (SaveHandler) DimensionManager.getWorld(0).getSaveHandler();
             File file = new File(saveHandler.getWorldDirectory(), "/playerdata/" + player.getGameProfile().getId().toString() + ".dat");
@@ -159,7 +159,7 @@ public class ExampleMod
         for (EntityPlayerMP receiver : players)
         {
             if(!quietList.contains(receiver.getUniqueID().toString()))
-                addMessage( sender.getName() + " say '" + event.message, receiver);
+                addMessage( sender.getDisplayName() + " say '" + event.message, receiver);
 
         }
 
