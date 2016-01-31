@@ -7,9 +7,14 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 //import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Cindy on 3/20/2015.
@@ -17,99 +22,75 @@ import java.util.List;
 public class ExampleShowCommand implements ICommand {
 
     private List aliases;
-    public ExampleShowCommand()
-    {
+    private Timer timer;
+    private ChunkCoordinates coords;
+    
+    public ExampleShowCommand() {
         this.aliases = new ArrayList();
-        this.aliases.add("show");
+        this.aliases.add("home");
+        timer = new Timer();
     }
-
-    public String getName()
-    {
-        return "show";
+    
+    class MoveTask extends TimerTask {
+    	public void run() {
+    	}
     }
 
     @Override
-    public String getCommandUsage(ICommandSender icommandsender)
-    {
-        return "show <text>";
+    public String getCommandUsage(ICommandSender icommandsender) {
+        return "home";
     }
 
-    public List getAliases()
-    {
-        return this.aliases;
-    }
-
-    public void execute(ICommandSender icommandsender, String[] astring)
-    {
-        if(astring.length > 1)
-        {
-            icommandsender.addChatMessage(new ChatComponentText("Invalid arguments"));
-            return;
-        }
-
-        if(icommandsender instanceof EntityPlayerMP) {
-            EntityPlayerMP ep = (EntityPlayerMP) icommandsender;
-
-            icommandsender.addChatMessage(new ChatComponentText("[MODCHAT]  Quieting chat now."));
-            if (ExampleMod.quietList.contains(ep.getUniqueID().toString())) {
-                ExampleMod.quietList.remove(ep.getUniqueID().toString());
-                ExampleMod.addMessage("Chat will now be shown again! Use /quiet to remove chat again!", ep);
-                return;
-            }
-        }
-    }
-
-    public boolean canCommandSenderUse(ICommandSender icommandsender)
-    {
-        return true;
-    }
-/*
     @Override
-    public List addTabCompletionOptions(ICommandSender icommandsender,
-                                        String[] astring, BlockPos loc)
-    {
-        return null;
-    }
-*/
-    @Override
-    public boolean isUsernameIndex(String[] astring, int i)
-    {
+    public boolean isUsernameIndex(String[] astring, int i) {
         return false;
     }
 
     @Override
-    public int compareTo(Object o)
-    {
+    public int compareTo(Object o) {
         return 0;
     }
 
-	@Override
+    @Override
 	public List addTabCompletionOptions(ICommandSender arg0, String[] arg1) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender arg0) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public List getCommandAliases() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.aliases;
 	}
 
 	@Override
 	public String getCommandName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "home";
 	}
 
 	@Override
 	public void processCommand(ICommandSender arg0, String[] arg1) {
-		// TODO Auto-generated method stub
-		
+        if (arg0 instanceof EntityPlayerMP) {
+    		final EntityPlayerMP player = (EntityPlayerMP) arg0;
+            World world = DimensionManager.getWorld(0);
+            ChunkCoordinates location = player.getBedLocation(world.provider.dimensionId);
+            if (location != null) {
+            	player.addChatMessage(new ChatComponentText("Moving you to your bed in 3 seconds."));
+            } else {
+            	player.addChatMessage(new ChatComponentText("Bed not found. Moving you to spawn in 3 seconds."));
+            	location = world.getSpawnPoint();
+            }
+            final ChunkCoordinates coords = location;
+		    final TimerTask timerTask = new TimerTask() {
+		        @Override
+		        public void run() {
+		            player.setLocationAndAngles(coords.posX, coords.posY+1.5, coords.posZ, 0, 0);
+		        }
+		    };
+		    timer.schedule(timerTask, 3 * 1000);
+        }
 	}
 }

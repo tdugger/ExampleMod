@@ -1,6 +1,6 @@
 package com.example.examplemod;
 
-import com.example.examplemod.commands.ExampleQuietCommand;
+//import com.example.examplemod.commands.ExampleQuietCommand;
 import com.example.examplemod.commands.ExampleShowCommand;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -49,33 +50,33 @@ public class ExampleMod
     public static final String pink = EnumChatFormatting.RESET + "" + EnumChatFormatting.LIGHT_PURPLE;
 
 
-    public static ArrayList<String> quietList;
+//    public static ArrayList<String> quietList;
     
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
 		// some example code
-        System.out.println("DIRT BLOCK >> "+Blocks.dirt.getUnlocalizedName());
-        System.out.println("GRAVEL BLOCK >> " + Blocks.gravel.getUnlocalizedName());
+//        System.out.println("DIRT BLOCK >> "+Blocks.dirt.getUnlocalizedName());
+//        System.out.println("GRAVEL BLOCK >> " + Blocks.gravel.getUnlocalizedName());
 
         MinecraftForge.EVENT_BUS.register(this);
         FMLCommonHandler.instance().bus().register(this);
 
-        quietList = new ArrayList<String>();
+//        quietList = new ArrayList<String>();
     }
 
     @EventHandler
     public void serverLoad(FMLServerStartingEvent event)
     {
-        event.registerServerCommand(new ExampleQuietCommand());
+        //event.registerServerCommand(new ExampleQuietCommand());
         event.registerServerCommand(new ExampleShowCommand());
     }
 
-
+/*
     //I'm a bit of test code and has no real purpose being here... :) But it works!
     @SubscribeEvent
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
-      /*  if (!event.world.isRemote && event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.entityPlayer.getHeldItem() == null
+        if (!event.world.isRemote && event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.entityPlayer.getHeldItem() == null
                 && event.entityPlayer.isSneaking()) {
             final TileEntity te = event.world.getTileEntity(event.pos);
             if (te != null && te instanceof TileEntitySign) {
@@ -86,7 +87,7 @@ public class ExampleMod
                 }
 
             }
-        }*/
+        }
     }
 
     @SubscribeEvent
@@ -134,11 +135,13 @@ public class ExampleMod
                 //is.setTagInfo("display",new NBTTagString("{display:{Name:\"name here\",color:0x5555F,Lore:[\"lore here\", \"lore here\"]}}"));
                 player.inventory.addItemStackToInventory(is);
 
-                player.addChatMessage(new ChatComponentText("\2478**\247cWelcome\247f to our server, " + player.getName()));
+                player.addChatMessage(new ChatComponentText("\2478**\247cWelcome\247f to our server, " + player.getDisplayName()));
             }
             else {
-                player.addChatMessage(new ChatComponentText("\2478**\247cWelcome\247f back! " + player.getName()));
+                player.addChatMessage(new ChatComponentText("\2478**\247cWelcome\247f back! " + player.getDisplayName()));
             }
+            World world = DimensionManager.getWorld(0);
+            player.addChatMessage(new ChatComponentText("\2478**\247fYour bed location is: " + player.getBedLocation(world.provider.dimensionId)));
 
 
     }
@@ -164,6 +167,7 @@ public class ExampleMod
         }
 
     }
+    */
 
     public static void addMessage(String msg,EntityPlayerMP ep) {
         ep.addChatMessage(new ChatComponentText("\2478[\247cMODCHAT\2478] \247f" + msg));
